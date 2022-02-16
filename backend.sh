@@ -4,9 +4,6 @@
 sudo su
 cd ~
 
-
-# Verify git version
-git --version
 #
 ## Install NodeJS and verify its version
 curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
@@ -41,6 +38,5 @@ systemctl enable mysql
 # Run application
 npm install -g pm2
 
-
-pm2 start server.js
-pm2 logs
+pm2 delete all
+pm2 start server.js -f
