@@ -15,6 +15,7 @@ npm install -g npm@8.5.0
 apt-get install mysql-server -y
 
 # Clone movie-analyst-api repository
+rm -Rf m*
 git clone https://github.com/MateoRincon04/movie-analyst-ui.git
 
 # Install dependencies inside the project and configure database
@@ -23,7 +24,7 @@ cd m*
 npm i express
 npm i superagent
 
-export BACK_HOST = "192.168.56.1"
+export BACK_HOST="192.168.56.4"
 
 # Run application
 npm install -g pm2

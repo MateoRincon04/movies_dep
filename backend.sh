@@ -15,6 +15,7 @@ npm install -g npm@8.5.0
 apt-get install mysql-server -y
 
 # Clone movie-analyst-api repository
+rm -Rf m*
 git clone https://github.com/MateoRincon04/movie-analyst-api.git
 
 # Install dependencies inside the project and configure database
@@ -30,13 +31,16 @@ systemctl start mysql
 #mysql
 #CREATE DATABASE movies_db
 #exit
+export DB_PASS="password"
+export PORT=3000
 
-mysql < data_model/table_creation_and_inserts.sql
+mysql -u root < data_model/table_creation_and_inserts.sql
 
 systemctl enable mysql
 
 # Run application
-npm install -g pm2
-
-pm2 delete all
-pm2 start server.js -f
+npm server.js
+#npm install -g pm2
+#
+#pm2 delete all
+#pm2 start server.js -f

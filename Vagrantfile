@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
     be.vm.box = 'generic/ubuntu1804'
     be.vm.synced_folder '.', '/vagrant', disabled: true
     be.vm.hostname = 'BackEndVM'
-    be.vm.network "private_network", ip: '192.168.56.1'
+    be.vm.network "private_network", ip: '192.168.56.4'
     be.vm.provision :shell, path: 'backend.sh'
     be.vm.provider "virtualbox" do |vb|
       vb.linked_clone = true
