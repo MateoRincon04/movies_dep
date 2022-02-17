@@ -31,7 +31,7 @@ systemctl start mysql
 #mysql
 #CREATE DATABASE movies_db
 #exit
-export DB_PASS="password"
+export DB_PASS=""
 export PORT=3000
 
 mysql -u root < data_model/table_creation_and_inserts.sql
@@ -39,8 +39,8 @@ mysql -u root < data_model/table_creation_and_inserts.sql
 systemctl enable mysql
 
 # Run application
-npm server.js
-#npm install -g pm2
-#
-#pm2 delete all
-#pm2 start server.js -f
+#node server.js
+npm install -g pm2
+
+pm2 delete all
+pm2 start server.js
