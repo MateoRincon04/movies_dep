@@ -1,33 +1,24 @@
 #!/bin/bash
 
 # User to root
-sudo su
+sudo -E su
 cd ~
 
-#
-## Install NodeJS and verify its version
-curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+## Install NodeJS and NPM
+[[ $(dpkg-query -l nodejs | grep -o "17") != "17" ]] && curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash - || echo "NodeJS already installed"
 apt-get install -y nodejs
-npm install -g npm@8.5.0
+[[ $(npm -v) != "8.5.0" ]] && npm install -g npm@8.5.0 || echo "NPM already updated"
 
 
-# Install MySQL and verify its version
-apt-get install mysql-server -y
-
-# Clone movie-analyst-api repository
-rm -Rf m*
-git clone https://github.com/MateoRincon04/movie-analyst-ui.git
-
-# Install dependencies inside the project and configure database
+# Clone movie-analyst-ui repository
+[ ! -d "/root/movie-analyst-ui" ] && git clone https://github.com/MateoRincon04/movie-analyst-ui.git || echo "Git repository already cloned"
 cd m*
 
-npm i express
-npm i superagent
-
-export BACK_HOST="192.168.56.4"
+# Install dependencies inside the project and configure database
+npm install
+# Environment variables
+export NODE_ENV=production
 
 # Run application
-npm install -g pm2
-
-pm2 delete all
-pm2 start server.js
+[[ $(npm ls -g | grep pm2) == "" ]] && npm install -g pm2 || echo "PM2 already installed"
+[[ $(pm2 status | grep -o "online") != "online" ]] && pm2 start server.js || echo "PM2 already running server.js"

@@ -1,46 +1,32 @@
 #!/bin/bash
 
 # User to root
-sudo su
+sudo -E su
 cd ~
 
-#
-## Install NodeJS and verify its version
-curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+## Install NodeJS and NPM
+[[ $(dpkg-query -l nodejs | grep -o "17") != "17" ]] && curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash - || echo "NodeJS already installed"
 apt-get install -y nodejs
-npm install -g npm@8.5.0
+[[ $(npm -v) != "8.5.0" ]] && npm install -g npm@8.5.0 || echo "NPM already updated"
 
 
-# Install MySQL and verify its version
+# Install MySQL
 apt-get install mysql-server -y
 
 # Clone movie-analyst-api repository
-rm -Rf m*
-git clone https://github.com/MateoRincon04/movie-analyst-api.git
-
-# Install dependencies inside the project and configure database
+[ ! -d "/root/movie-analyst-api" ] && git clone https://github.com/MateoRincon04/movie-analyst-api.git || echo "Git repository already cloned"
 cd m*
 
+# Install dependencies inside the project and configure database
+npm install
 
-npm i express
-npm i mysql
-# npm i --package-lock-only
-
-systemctl start mysql
-
-#mysql
-#CREATE DATABASE movies_db
-#exit
-export DB_PASS=""
-export PORT=3000
+[[ $(systemctl status mysql | grep -o “active”) != "active" ]] && systemctl start mysql || echo "MySQL esta activo"
 
 mysql -u root < data_model/table_creation_and_inserts.sql
 
-systemctl enable mysql
+# Environment variables
+export NODE_ENV=production
 
 # Run application
-#node server.js
-npm install -g pm2
-
-pm2 delete all
-pm2 start server.js
+[[ $(npm ls -g | grep pm2) == "" ]] && npm install -g pm2 || echo "PM2 already installed"
+[[ $(pm2 status | grep -o "online") != "online" ]] && pm2 start server.js || echo "PM2 already running server.js"
