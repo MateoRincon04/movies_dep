@@ -30,9 +30,9 @@ Normally, the MASTER (MAIN) branch is the one that has the official release hist
 
 - Redundant branches MASTER/DEVELOP that could cause a harder CI/CD practice unless the project has a scheduled release cycle.
 
-```
-GitFlow.svg
-```
+<div>
+  <image src="GitFlow.svg">
+</div>
 
 ## GitHub Flow
 
@@ -52,9 +52,9 @@ Created by GitHub in 2011, GitHub Flow is one of the simpler if not the simplest
 
 This model is good for small teams and web apps. Because of its simplicity it supports CI/CD. Nevertheless its very susceptible that production becomes buggy and unstable because its lack of dedicated development process through other branches but the MASTER.
 
-```
-GitHubFlow.svg
-```
+<div>
+  <image src="GitHubFlow.svg">
+</div>
 
 ## GitLab Flow
 
@@ -82,11 +82,9 @@ The flow defines the CI/CD
 
 - CD: because every commit can be treated as a deployment or every certain amount of features or time, depending on how the model is going to be implemented for the project.
 
-The only drawback is that it can become messy overtime because of the amount of releases that are in play and/or their maintenance
+The only drawback is that it can become messy overtime because of the amount of releases that are in play and/or their maintenance.
 
-```
-GitLabFlow page
-```
+[GitLab Flow page](https://docs.gitlab.com/ee/topics/gitlab_flow.html)
 
 ## One Flow
 
@@ -94,9 +92,7 @@ Created by Adam Ruka in 2015, is proposed as an alternative to Git Flow. And its
 
 It is a very dynamic model and it can be adapted to every teams necessities, it provides a clear version history. Although, it is not recommended for CD because there is not a clear deployment process to follow, and CI is done via FEATURE branches not to one only branch.
 
-```
-One Flow page
-```
+[One Flow page](https://oneflow.com/)
 
 ## Trunk-based Development
 
@@ -107,14 +103,16 @@ CI/CD are both consequences to work with this method. CI is done by small steps 
 - Branching by abstraction: you rely on a source code abstraction to achieve the effect of a branch without an actual version control branch.
 
 - Feature flags: allow developers to deploy unfinished code to production while hiding it from end-users. And allow you to wire your branch by abstraction to an externally controllable mechanism, such as an application configuration file or even an external database or service.
-  
-    TBD.jfif
+
+<div>
+  <image src="TBD.jpg">
+</div>
 
 ---
 
 # DECISION FOR MOVIE PROJECT
 
-After all this research, analysis, understanding and debate ( with Carlos ), I've come to a decision:
+After all this research, analysis, understanding and debate (with Carlos), I've come to a decision:
 
 I will be implementing a variation of the GitHub Flow, the only thing that I want to change is that I want a DEVELOP branch where I can fork the FEATURE branches and where CI would take place. Instead of using rebasing as a strategy to add the features I am going to implement a merging strategy that at a certain point will have to pass all tests for the merging to take place.
 
