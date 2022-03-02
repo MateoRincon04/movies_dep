@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
 
         backend.vm.box = "generic/ubuntu1804"
         backend.vm.network :private_network, ip: "192.168.56.#{i+1}"
-        backend.vm.provision :shell, path: 'backend.sh', env: {"PORT"=>ENV['PORT'], "DB_PASS"=>ENV['DB_PASS']}
+        backend.vm.provision :shell, path: 'backend.sh', env: {"PORT"=>ENV['PORT'], "DB_PASS"=>ENV['DB_PASS'], "DB_HOST"=>ENV['DB_HOST'], "DB_USER"=>ENV['DB_USER'], "DB_NAME"=>ENV['DB_NAME']}
         backend.ssh.forward_agent = true
         backend.vm.synced_folder '.', '/vagrant', disabled: true
     end
