@@ -83,4 +83,23 @@ Vagrant.configure("2") do |config|
     lbf.vm.synced_folder '.', '/vagrant', disabled: true
   end
 
+  config.vm.define :database do |db|
+    db.vm.provider :virtualbox do |v|
+        v.linked_clone = true
+        v.name = "database"
+        v.customize [
+            "modifyvm", :id,
+            "--name", "database",
+            "--memory", 512,
+            "--natdnshostresolver1", "on",
+            "--cpus", 1,
+        ]
+    end
+    db.vm.box = "generic/ubuntu1804"
+    db.vm.network :private_network, ip: "192.168.56.5"
+    db.vm.network "forwarded_port", guest: 3306, host: 3306
+    db.vm.provision :shell, path: 'database.sh'
+    db.ssh.forward_agent = true
+    db.vm.synced_folder '.', '/vagrant', disabled: true
+  end
 end
