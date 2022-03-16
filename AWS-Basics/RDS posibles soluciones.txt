@@ -1,0 +1,11 @@
+Para poder hacer el provision de la RDS
+
+Por medio de IaC, es decir usando AWS CLI, y para eso usar la herramientas Terraform o AWS CloudFormation.
+
+Realizar un snapshot y crear la RDS por medio de dicho snapshot.
+
+Correr local la base local y los demas servicios en la nube. (no se hace uso de todas las funcionalidades, auto-scaling, sg, ... de RDS)
+
+Usar AWS Lambda para crear todo luego de que se cree la RDS por medio de scripting con Python (tutorial, costoso).
+
+En el propio script del Backend realizar la conexion a la RDS y pasarle el archivo. Cuidado con los permisos del usuario de MySQL, intentar con --password=contraseña (aunque esto es quemar la contraseña, pero se puede intentar por medio de una EnvVar) y Mysql-idempotencia (IF EXISTS, IGNORE, ...)
