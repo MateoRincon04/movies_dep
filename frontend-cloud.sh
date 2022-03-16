@@ -11,7 +11,7 @@ apt-get install -y nodejs
 
 # Environment variables
 export NODE_ENV=production
-export BACK_HOST="10.1.88.0/21"
+export BACK_HOST="internal-Backend-ALB-1740930494.us-west-1.elb.amazonaws.com:3000"
 
 # Clone movie-analyst-ui repository
 [ ! -d "/root/movie-analyst-ui" ] && git clone https://github.com/MateoRincon04/movie-analyst-ui.git || echo "Git repository already cloned"
