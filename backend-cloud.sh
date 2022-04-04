@@ -15,7 +15,7 @@ cd m*
 
 # Environment variables
 export NODE_ENV=production
-export DB_HOST="rds-movie-analyst.cx02uzagq3fl.us-west-1.rds.amazonaws.com"
+export DB_HOST=${DB_HOST}
 export DB_USER="applicationuser"
 export DB_PASS="applicationuser"
 export DB_NAME="movie_db"
@@ -25,9 +25,7 @@ export PORT=3000
 apt-get install mysql-server -y
 [[ $(systemctl status mysql | grep -o “active”) != "active" ]] && systemctl start mysql || echo "MySQL esta activo"
 
-mysql -h rds-movie-analyst.cx02uzagq3fl.us-west-1.rds.amazonaws.com -P 3306 -u $DB_USER --password=$DB_PASS < data_model/table_creation_and_inserts.sql
-
-applicationuser
+mysql -h ${DB_HOST} -P 3306 -u $DB_USER --password=$DB_PASS < data_model/table_creation_and_inserts.sql
 
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 
@@ -37,8 +35,8 @@ npm install
 
 # Run application
 [[ $(npm ls -g | grep pm2) == "" ]] && npm install -g pm2 || echo "PM2 already installed"
-[[ $(pm2 status | grep -o "online") != "online" ]] && pm2 start server.js || echo "PM2 already running server.js"
+[[ $(pm2 status | grep -o "online") != "online" ]] && NODE_ENV=production DB_USER="applicationuser" DB_NAME="movie_db" PORT=3000 DB_HOST=${DB_HOST} pm2 start server.js --update-env || echo "PM2 already running server.js"
 
-sleep 1
-echo "--------------------------------------------------------------------------------"
-pm2 logs
+ sleep 1
+ echo "--------------------------------------------------------------------------------"
+ pm2 logs

@@ -11,7 +11,7 @@ apt-get install -y nodejs
 
 # Environment variables
 export NODE_ENV=production
-export BACK_HOST="internal-Backend-ALB-1740930494.us-west-1.elb.amazonaws.com:3000"
+export BACK_HOST=${BACK_HOST}
 
 # Clone movie-analyst-ui repository
 [ ! -d "/root/movie-analyst-ui" ] && git clone https://github.com/MateoRincon04/movie-analyst-ui.git || echo "Git repository already cloned"
@@ -22,8 +22,12 @@ npm install
 
 # Run application
 [[ $(npm ls -g | grep pm2) == "" ]] && npm install -g pm2 || echo "PM2 already installed"
-[[ $(pm2 status | grep -o "online") != "online" ]] && pm2 start server.js || echo "PM2 already running server.js"
+[[ $(pm2 status | grep -o "online") != "online" ]] && BACK_HOST=${BACK_HOST} NODE_ENV=production pm2 start server.js --update-env || echo "PM2 already running server.js"
 
 sleep 1
+echo "AQUI EMPIEZA..........."
+echo $BACK_HOST
+echo "...........TERMINA AQUI"
 echo "--------------------------------------------------------------------------------"
 pm2 logs
+
