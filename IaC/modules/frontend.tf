@@ -54,7 +54,7 @@ resource "aws_launch_template" "Template-Frontend" {
   name          = "Template-Frontend"
   description   = "Template for auto scaling group for frontend movie-analyst-ui"
   instance_initiated_shutdown_behavior = "terminate"
-  key_name = aws_key_pair.mateorincona.key_name
+  key_name = data.aws_key_pair.mateorincona.key_name
   image_id      = "ami-009726b835c24a3aa"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.SG-Frontend-movie-analyst.id]

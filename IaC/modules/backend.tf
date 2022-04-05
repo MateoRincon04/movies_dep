@@ -71,7 +71,7 @@ resource "aws_launch_template" "Template-Backend" {
   name          = "Template-Backend"
   description   = "Template for auto scaling group for backend movie-analyst-api"
   instance_initiated_shutdown_behavior = "terminate"
-  key_name = aws_key_pair.mateorincona.key_name
+  key_name = data.aws_key_pair.mateorincona.key_name
   image_id      = "ami-009726b835c24a3aa"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.SG-Backend-movie-analyst.id]

@@ -7,7 +7,7 @@ resource "aws_instance" "bastion" {
   subnet_id = data.aws_subnet.ramp_up_training-public-1.id
   private_ip = "10.1.8.5"
 
-  key_name = aws_key_pair.mateorincona.key_name
+  key_name = data.aws_key_pair.mateorincona.key_name
   security_groups = [aws_security_group.SG-Bastion-movie-analyst.id]
 
   tags = {

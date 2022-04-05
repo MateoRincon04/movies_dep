@@ -102,7 +102,7 @@ resource "aws_lb" "ALB-Frontend" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SG-Frontend-LB.id]
-  subnets            = [data.aws_subnet.ramp_up_training-private-0.id, data.aws_subnet.ramp_up_training-private-1.id]
+  subnets            = [data.aws_subnet.ramp_up_training-private-0.id, data.aws_subnet.ramp_up_training-public-1.id]
   ip_address_type = "ipv4"
   tags = {
     project = "ramp-up-devops"

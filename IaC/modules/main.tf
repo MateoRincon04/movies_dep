@@ -39,28 +39,15 @@ data "aws_subnet" "ramp_up_training-private-1" {
   id = "subnet-038fa9d9a69d6561e"
 }
 
-resource "tls_private_key" "key" {
- algorithm = "RSA"
- rsa_bits  = 4096
-}
-
 # Key pair
-resource "aws_key_pair" "mateorincona" {
+data "aws_key_pair" "mateorincona" {
   key_name = "mateo.rincona"
-  public_key = tls_private_key.key.public_key_openssh
-}
-
-# 
-resource "local_file" "private_key" {
-  sensitive_content = tls_private_key.key.private_key_pem
-  filename          = format("%s/%s/%s", abspath(path.root), ".ssh", "mateo.rincona.pem")
-  file_permission   = "0600"
 }
 
 resource "local_file" "ansible_inventory" {
   content = templatefile("inventory.tmpl", {
       ip          = aws_instance.bastion.public_ip,
-      ssh_keyfile = local_file.private_key.filename
+      ssh_keyfile = "/home/mateo/mateo.rincona.pem"
   })
-  filename = format("%s/%s", abspath(path.root), "inventory.yaml")
+  filename = "${path.module}/inventory.yaml"
 }
