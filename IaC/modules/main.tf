@@ -43,11 +43,3 @@ data "aws_subnet" "ramp_up_training-private-1" {
 data "aws_key_pair" "mateorincona" {
   key_name = "mateo.rincona"
 }
-
-resource "local_file" "ansible_inventory" {
-  content = templatefile("inventory.tmpl", {
-      ip          = aws_instance.bastion.public_ip,
-      ssh_keyfile = "/home/mateo/mateo.rincona.pem"
-  })
-  filename = "${path.module}/inventory.yaml"
-}
