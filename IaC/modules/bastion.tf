@@ -5,10 +5,10 @@ resource "aws_instance" "bastion" {
 
   associate_public_ip_address = "true"
   subnet_id = data.aws_subnet.ramp_up_training-public-1.id
-  private_ip = "10.1.8.5"
 
   key_name = data.aws_key_pair.mateorincona.key_name
   security_groups = [aws_security_group.SG-Bastion-movie-analyst.id]
+
 
   tags = {
     Name = "Bastion"
@@ -21,8 +21,14 @@ resource "aws_instance" "bastion" {
     project = "ramp-up-devops"
     responsible = "mateo.rincona"
   }
+
 }
 
+resource "null_resource" "bastion" {
+  provisioner "local-exec" {
+    command = "sleep 30 && ./scripts/bastion.sh ${aws_instance.bastion.public_ip}"
+  }
+}
 
 # SG for Bastion instance
 resource "aws_security_group" "SG-Bastion-movie-analyst" {
@@ -52,4 +58,28 @@ resource "aws_security_group" "SG-Bastion-movie-analyst" {
     project = "ramp-up-devops"
     responsible = "mateo.rincona"
   }
+}
+
+resource "aws_security_group_rule" "back_bastion" {
+  description = "Back to Bastion"
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.SG-Bastion-movie-analyst.id
+  source_security_group_id = aws_security_group.SG-Backend-movie-analyst.id
+}
+
+resource "aws_security_group_rule" "front_bastion" {
+  description = "Back to Bastion"
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.SG-Bastion-movie-analyst.id
+  source_security_group_id = aws_security_group.SG-Frontend-movie-analyst.id
+}
+
+output "bastion_public_ip" {
+  value = aws_instance.bastion.public_ip
 }

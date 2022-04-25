@@ -1,0 +1,14 @@
+---
+plugin: aws_ec2
+boto_profile: default
+regions:
+  - us-west-1
+filters:
+  tag:project: ramp-up-devops
+  tag:responsible: mateo.rincona
+  tag:Name:
+    - Backend_instance
+    - Frontend_instance
+keyed_groups:
+  - key: tags.Name
+    separator: ''

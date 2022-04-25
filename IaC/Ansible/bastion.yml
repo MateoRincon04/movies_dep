@@ -1,0 +1,72 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: Ensure the jenkins apt repository key is installed
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+        state: present
+
+    - name: Ensure jenkins repository is configured
+      apt_repository:
+        repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+        state: present
+
+    - name: Install packages that bastion will need
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop: ['ansible', 'python3-pip', 'openjdk-11-jdk', 'jenkins']
+      register: apt_status
+      until: apt_status is success
+      delay: 6
+      retries: 10
+
+    - name: Install pip required libraries
+      pip:
+        name: "{{ item }}"
+      loop: ['boto', 'boto3']
+
+#    - name: Start Jenkins
+#      service:
+#        name: jenkins
+#        enabled: true
+#        state: started
+
+    - name: Clone movies_dep (ramp up) repo from GitHub
+      ansible.builtin.git:
+        repo: https://github.com/MateoRincon04/movies_dep.git
+        dest: ~/movies_dep
+        force: yes
+        version: develop
+
+    - name: Copy private key
+      copy:
+        src: ~/.ssh/id_rsa
+        dest: /home/ubuntu/.ssh/id_rsa
+        owner: ubuntu
+        mode: '0400'
+
+    - name: Copy credentials
+      copy:
+        src: ~/.aws
+        dest: /home/ubuntu/
+        owner: ubuntu
+        mode: '0600'
+
+    - name: Copy ansible config
+      copy:
+        src: ./ansible.cfg
+        dest: /home/ubuntu/
+        owner: ubuntu
+      become_user: ubuntu
+
+    - name: Create symbolic link to python3
+      file:
+        src: /usr/bin/python3
+        dest: /usr/bin/python
+        state: link
+
+

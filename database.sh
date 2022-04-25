@@ -9,7 +9,7 @@ export NODE_ENV=production
 
 # Install MySQL
 apt-get update
-apt-get install mysql-server -y
+apt-get install mysql-client -y
 
 # Clone movie-analyst-api repository
 [ ! -d "/root/movie-analyst-api" ] && git clone https://github.com/MateoRincon04/movie-analyst-api.git || echo "Git repository already cloned"

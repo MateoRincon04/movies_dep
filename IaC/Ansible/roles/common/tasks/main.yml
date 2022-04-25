@@ -1,0 +1,15 @@
+---
+
+- name: Install nodejs
+  apt:
+    name: nodejs
+    state: present
+
+- name: Install packages based on package.json using npm
+  npm:
+    path: "{{ansible_app_dir}}"
+
+- name: Install "pm2" node.js package.
+  npm:
+    name: pm2
+    global: yes

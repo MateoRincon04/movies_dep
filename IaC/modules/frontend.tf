@@ -10,17 +10,17 @@ resource "aws_security_group" "SG-Frontend-movie-analyst" {
     from_port = 3030
     to_port = 3030
     protocol = "tcp"
-    security_groups = [aws_security_group.SG-Frontend-LB.id]
+    security_groups = [aws_security_group.SG-Frontend-LB.id, aws_security_group.SG-Bastion-movie-analyst.id]
   }
 
   # Allow access from Bastion through 3030
-  ingress {
-    description = "Allow access from Bastion through port 3030"
-    from_port = 3030
-    to_port = 3030
-    protocol = "tcp"
-    security_groups = [aws_security_group.SG-Bastion-movie-analyst.id]
-  }
+#  ingress {
+#    description = "Allow access from Bastion through port 3030"
+#    from_port = 3030
+#    to_port = 3030
+#    protocol = "tcp"
+#    security_groups = [aws_security_group.SG-Bastion-movie-analyst.id]
+#  }
 
   # Allow access from Bastion through SSH
   ingress {
@@ -58,9 +58,8 @@ resource "aws_launch_template" "Template-Frontend" {
   image_id      = "ami-009726b835c24a3aa"
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.SG-Frontend-movie-analyst.id]
-  # user_data = filebase64("~/movies_dep/backend-cloud.sh")
-  # user_data = data.template_file.backend_user_data.rendered
-  user_data = base64encode(templatefile("~/movies_dep/frontend-cloud.sh", { BACK_HOST = aws_lb.ALB-Backend.dns_name }))
+  # user_data = base64encode(templatefile("~/movies_dep/frontend-cloud.sh", { BACK_HOST = aws_lb.ALB-Backend.dns_name }))
+  user_data = base64encode(templatefile("./scripts/frontend.sh", { BASTION_HOST = aws_instance.bastion.private_ip, BACK_HOST = aws_lb.ALB-Backend.dns_name }))
 
   tag_specifications {
     resource_type = "instance"

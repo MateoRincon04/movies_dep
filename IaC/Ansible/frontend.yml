@@ -1,0 +1,32 @@
+---
+- hosts: Frontend_instance
+  remote_user: root
+  #connection: local
+  become: true
+  become_method: sudo
+  vars:
+    NODE_ENV: 'production'
+
+  tasks:
+    - name: Clone movie-analyst-ui from GitHub
+      ansible.builtin.git:
+        repo: https://github.com/MateoRincon04/movie-analyst-ui.git
+        dest: ~/movie-analyst-ui
+        force: yes
+        single_branch: yes
+        version: master
+
+    - name: Get inside the proyect folder
+      shell:
+        cmd: cd ~/movie-analyst-ui
+
+    - name: Run common role
+      include_role:
+        name: common
+      vars:
+        ansible_app_dir: '~/movie-analyst-ui'
+
+    - name: start pm2 process
+      ansible.builtin.command: 'pm2 start server.js'
+      args:
+        chdir: ~/movie-analyst-ui

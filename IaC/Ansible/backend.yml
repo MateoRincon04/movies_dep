@@ -1,0 +1,53 @@
+---
+- hosts: Backend_instance
+  remote_user: root
+  # connection: local
+  become: yes
+  become_method: sudo
+  vars:
+    NODE_ENV: 'production'
+    DB_USER: 'applicationuser'
+    DB_NAME: 'movie_db'
+    PORT: 3000
+
+  tasks:
+    - name: Clone movie-analyst-api from GitHub
+      ansible.builtin.git:
+        repo: https://github.com/MateoRincon04/movie-analyst-api.git
+        dest: ~/movie-analyst-api
+        force: yes
+        single_branch: yes
+        version: master
+
+    - name: Get inside the proyect folder
+      ansible.builtin.shell:
+        cmd: cd ~/m*
+
+    - name: Run common role
+      include_role:
+        name: common
+      vars:
+      ansible_app_dir: '~/movie-analyst-api'
+
+    - name: Install mysql-client
+      package:
+        name: mysql-client
+        state: present
+
+    - name: Make sure pymysql is present
+      become: true
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Import database configuration into RDS
+      community.mysql.mysql_db:
+        state: import
+        name: "{{DB_NAME}}"
+        login_user: "{{DB_USER}}"
+        login_password: "{{DB_PASS}}"
+        login_host: "{{DB_HOST}}"
+        target: ./data_model/table_creation_and_inserts.sql
+
+    - name: Run application using pm2
+      command: 'pm2 start server.js'
