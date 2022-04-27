@@ -1,5 +1,6 @@
 - hosts: all
   become: yes
+  become_user: root
   become_method: sudo
 
   tasks:
@@ -24,7 +25,11 @@
       delay: 6
       retries: 10
 
-    - name: Install pip required libraries
+#    - name: Update pip3
+#      ansible.builtin.shell:
+#        cmd: python3 -m pip3 install --upgrade pip
+
+    - name: Install pip3 required libraries
       pip:
         name: "{{ item }}"
       loop: ['boto', 'boto3']
@@ -41,6 +46,7 @@
         dest: ~/movies_dep
         force: yes
         version: develop
+      become_user: ubuntu
 
     - name: Copy private key
       copy:
@@ -48,6 +54,8 @@
         dest: /home/ubuntu/.ssh/id_rsa
         owner: ubuntu
         mode: '0400'
+      become_user: ubuntu
+      become: yes
 
     - name: Copy credentials
       copy:
@@ -55,18 +63,17 @@
         dest: /home/ubuntu/
         owner: ubuntu
         mode: '0600'
+      become_user: ubuntu
+      become: yes
 
     - name: Copy ansible config
       copy:
         src: ./ansible.cfg
-        dest: /home/ubuntu/
-        owner: ubuntu
-      become_user: ubuntu
+        dest: /etc/ansible/
+      become: yes
 
     - name: Create symbolic link to python3
       file:
         src: /usr/bin/python3
         dest: /usr/bin/python
         state: link
-
-
