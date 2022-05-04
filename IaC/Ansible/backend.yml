@@ -27,7 +27,7 @@
       include_role:
         name: common
       vars:
-      ansible_app_dir: '~/movie-analyst-api'
+        ansible_app_dir: '~/movie-analyst-api'
 
     - name: Install mysql-client
       package:

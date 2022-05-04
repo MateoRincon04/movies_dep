@@ -19,20 +19,21 @@
         name: "{{ item }}"
         state: present
         update_cache: yes
-      loop: ['ansible', 'python3-pip', 'openjdk-11-jdk', 'jenkins']
+      loop: ['python3-pip', 'openjdk-11-jdk', 'jenkins']
       register: apt_status
       until: apt_status is success
       delay: 6
       retries: 10
 
-#    - name: Update pip3
-#      ansible.builtin.shell:
-#        cmd: python3 -m pip3 install --upgrade pip
+
+    - name: Update pip3
+      ansible.builtin.shell:
+        cmd: pip3 install --upgrade pip
 
     - name: Install pip3 required libraries
       pip:
         name: "{{ item }}"
-      loop: ['boto', 'boto3']
+      loop: ['boto', 'boto3', 'ansible']
 
 #    - name: Start Jenkins
 #      service:
