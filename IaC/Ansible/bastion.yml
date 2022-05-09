@@ -14,17 +14,28 @@
         repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
         state: present
 
+    - name: Add deadsnakes repository into sources list
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        state: present
+        update_cache: yes
+
     - name: Install packages that bastion will need
       apt:
         name: "{{ item }}"
         state: present
         update_cache: yes
-      loop: ['python3-pip', 'openjdk-11-jdk', 'jenkins']
+      loop: ['python3.9', 'python3-pip', 'openjdk-11-jdk', 'jenkins']
       register: apt_status
       until: apt_status is success
       delay: 6
       retries: 10
 
+    - name: Install Python 3.9 and select it for python
+      community.general.alternatives:
+        name: python
+        path: /usr/bin/python3.9
+        link: /usr/bin/python
 
     - name: Update pip3
       ansible.builtin.shell:

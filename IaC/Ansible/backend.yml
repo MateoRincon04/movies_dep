@@ -1,5 +1,5 @@
 ---
-- hosts: Backend_instance
+- hosts: Backend-movie-analyst
   remote_user: root
   # connection: local
   become: yes

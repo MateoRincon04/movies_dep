@@ -1,5 +1,5 @@
 ---
-- hosts: Frontend_instance
+- hosts: Frontend-movie-analyst
   remote_user: root
   #connection: local
   become: true

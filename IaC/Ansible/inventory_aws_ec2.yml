@@ -1,4 +1,4 @@
----
+hosts: all
 plugin: aws_ec2
 boto_profile: default
 regions:
