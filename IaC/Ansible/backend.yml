@@ -29,38 +29,9 @@
         name: mysql-client
         state: present
 
-    - name: install python-setuptools
-      package:
-        name: python3-setuptools
-        state: present
-
-    - name: Install pip
-      apt:
-        name: python3-pip
-        state: present
-        update_cache: yes
-
-    - name: Update pip3
+    - name: Run mysql
       ansible.builtin.shell:
-        cmd: pip3 install --upgrade pip
-
-    - name: Install pip3 required libraries
-      pip:
-        name: pymysql
-        state: present
-
-    - name: Get community.mysql collection from ansible-galaxy
-      ansible.builtin.shell:
-        cmd: ansible-galaxy collection install community.mysql
-
-    - name: Import database configuration into RDS
-      community.mysql.mysql_db:
-        state: import
-        name: "{{DB_NAME}}"
-        login_user: "{{DB_USER}}"
-        login_password: "{{DB_PASS}}"
-        login_host: "{{DB_HOST}}"
-        target: ./data_model/table_creation_and_inserts.sql
+        cmd: mysql -h {{DB_HOST}} -P 3306 -u {{DB_USER}} --password={{DB_PASS}} < ~/movie-analyst-api/data_model/table_creation_and_inserts.sql
 
     - name: Run application using pm2
-      command: 'pm2 start server.js'
+      command: 'NODE_ENV={{NODE_ENV}} DB_USER={{DB_USER}} DB_NAME={{DB_NAME}}" PORT=3000 DB_HOST={{DB_HOST}} pm2 start server.js --update-env'
