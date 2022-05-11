@@ -1,7 +1,6 @@
 ---
 - hosts: Backend_movie_analyst
-  remote_user: root
-  # connection: local
+  become_user: root
   become: yes
   become_method: sudo
   vars:
@@ -19,10 +18,6 @@
         single_branch: yes
         version: master
 
-    - name: Get inside the proyect folder
-      ansible.builtin.shell:
-        cmd: cd ~/m*
-
     - name: Run common role
       include_role:
         name: common
@@ -34,11 +29,29 @@
         name: mysql-client
         state: present
 
-    - name: Make sure pymysql is present
-      become: true
+    - name: install python-setuptools
+      package:
+        name: python3-setuptools
+        state: present
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: yes
+
+    - name: Update pip3
+      ansible.builtin.shell:
+        cmd: pip3 install --upgrade pip
+
+    - name: Install pip3 required libraries
       pip:
         name: pymysql
         state: present
+
+    - name: Get community.mysql collection from ansible-galaxy
+      ansible.builtin.shell:
+        cmd: ansible-galaxy collection install community.mysql
 
     - name: Import database configuration into RDS
       community.mysql.mysql_db:

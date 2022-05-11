@@ -29,15 +29,6 @@ resource "aws_security_group" "SG-Backend-movie-analyst" {
     security_groups = [aws_security_group.SG-Bastion-movie-analyst.id, aws_security_group.SG-Backend-LB.id]
   }
 
-  # Allow access from LB-Backend to Backend instances through port 3000
-#  ingress {
-#    description     = "from LB-Backend to Backend instances"
-#    from_port       = 3000
-#    to_port         = 3000
-#    protocol        = "tcp"
-#    security_groups = [aws_security_group.SG-Backend-LB.id]
-#  }
-
   # Allow access to RDS
   ingress {
     description = "Backend to RDS"

@@ -71,7 +71,7 @@ resource "aws_security_group_rule" "back_bastion" {
 }
 
 resource "aws_security_group_rule" "front_bastion" {
-  description = "Back to Bastion"
+  description = "Front to Bastion"
   type              = "ingress"
   from_port         = 22
   to_port           = 22
