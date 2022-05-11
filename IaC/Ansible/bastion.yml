@@ -31,7 +31,7 @@
       delay: 6
       retries: 10
 
-    - name: Install Python 3.9 and select it for python
+    - name: Install Python 3.9 and select it as python
       community.general.alternatives:
         name: python
         path: /usr/bin/python3.9
