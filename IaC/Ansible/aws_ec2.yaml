@@ -6,7 +6,7 @@ filters:
   tag:project: ramp-up-devops
   tag:responsible: mateo.rincona
   tag:Name:
-    - Backend-movie-analyst
+    - Backend_movie_analyst
     - Frontend-movie-analyst
 keyed_groups:
   - key: tags.Name

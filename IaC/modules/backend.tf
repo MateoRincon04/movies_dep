@@ -105,7 +105,7 @@ variable "extra_tags_back" {
   default = [
     {
       key                 = "Name"
-      value               = "Backend-movie-analyst"
+      value               = "Backend_movie_analyst"
       propagate_at_launch = true
     },
     {
