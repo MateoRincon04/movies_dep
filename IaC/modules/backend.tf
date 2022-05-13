@@ -64,6 +64,7 @@ variable "db_pass" {
 
 # Launch template
 resource "aws_launch_template" "Template-Backend" {
+  depends_on = [null_resource.bastion]
   name          = "Template-Backend"
   description   = "Template for auto scaling group for backend movie-analyst-api"
   instance_initiated_shutdown_behavior = "terminate"

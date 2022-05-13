@@ -34,4 +34,5 @@
         cmd: mysql -h {{DB_HOST}} -P 3306 -u {{DB_USER}} --password={{DB_PASS}} < ~/movie-analyst-api/data_model/table_creation_and_inserts.sql
 
     - name: Run application using pm2
-      command: 'NODE_ENV={{NODE_ENV}} DB_USER={{DB_USER}} DB_NAME={{DB_NAME}}" PORT=3000 DB_HOST={{DB_HOST}} pm2 start server.js --update-env'
+      ansible.builtin.shell:
+        cmd: NODE_ENV={{NODE_ENV}} DB_USER={{DB_USER}} DB_NAME={{DB_NAME}} PORT=3000 DB_HOST={{DB_HOST}} pm2 start server.js --update-env
