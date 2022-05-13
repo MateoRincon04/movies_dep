@@ -52,14 +52,14 @@
         version: develop
       become_user: ubuntu
 
-    - name: Copy private key
-      copy:
-        src: ~/.ssh/id_rsa
-        dest: /home/ubuntu/.ssh/id_rsa
-        owner: ubuntu
-        mode: '0400'
-      become_user: ubuntu
-      become: yes
+ #   - name: Copy private key
+ #     copy:
+ #       src: ~/.ssh/id_rsa
+ #       dest: /home/ubuntu/.ssh/id_rsa
+ #       owner: ubuntu
+ #       mode: '0400'
+ #     become_user: ubuntu
+ #     become: yes
 
     - name: Copy credentials
       copy:

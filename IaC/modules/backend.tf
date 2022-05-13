@@ -1,11 +1,3 @@
-# User-data for template, mixing both file and env variables that depend on another aws resource
-#data "template_file" "backend_user_data" {
-#  template = file("~/movies_dep/backend-cloud.sh")
-#  vars = {
-#    DB_HOST = aws_db_instance.RDS-movie-analyst.address
-#  }
-#}
-
 # SG for Back instances
 resource "aws_security_group" "SG-Backend-movie-analyst" {
   name = "SG-Backend-movie-analyst"

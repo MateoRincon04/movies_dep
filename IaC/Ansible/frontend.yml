@@ -1,8 +1,7 @@
 ---
 - hosts: Frontend-movie-analyst
   remote_user: root
-  #connection: local
-  become: true
+  become: yes
   become_method: sudo
   vars:
     NODE_ENV: 'production'
@@ -16,17 +15,12 @@
         single_branch: yes
         version: master
 
-    - name: Get inside the proyect folder
-      shell:
-        cmd: cd ~/movie-analyst-ui
-
     - name: Run common role
       include_role:
         name: common
       vars:
         ansible_app_dir: '~/movie-analyst-ui'
 
-    - name: start pm2 process
-      ansible.builtin.command: 'pm2 start server.js'
-      args:
-        chdir: ~/movie-analyst-ui
+    - name: Run application using pm2
+      ansible.builtin.shell:
+        cmd: BACK_HOST={{BACK_HOST}} NODE_ENV={{NODE_ENV}} pm2 start server.js --update-env
