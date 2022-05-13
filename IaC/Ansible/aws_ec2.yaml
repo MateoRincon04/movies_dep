@@ -7,7 +7,7 @@ filters:
   tag:responsible: mateo.rincona
   tag:Name:
     - Backend_movie_analyst
-    - Frontend-movie-analyst
+    - Frontend_movie_analyst
 keyed_groups:
   - key: tags.Name
     separator: ''

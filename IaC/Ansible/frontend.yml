@@ -1,5 +1,5 @@
 ---
-- hosts: Frontend-movie-analyst
+- hosts: Frontend_movie_analyst
   remote_user: root
   become: yes
   become_method: sudo

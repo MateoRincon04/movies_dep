@@ -83,7 +83,7 @@ variable "extra_tags_front" {
   default = [
     {
       key                 = "Name"
-      value               = "Frontend-movie-analyst"
+      value               = "Frontend_movie_analyst"
       propagate_at_launch = true
     },
     {
