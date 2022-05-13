@@ -2,12 +2,20 @@ plugin: aws_ec2
 boto_profile: default
 regions:
   - us-west-1
+
 filters:
   tag:project: ramp-up-devops
   tag:responsible: mateo.rincona
   tag:Name:
     - Backend_movie_analyst
     - Frontend_movie_analyst
+
 keyed_groups:
   - key: tags.Name
     separator: ''
+
+compose:
+  ansible_host: private_ip_address
+
+hostnames:
+  - private-ip-address

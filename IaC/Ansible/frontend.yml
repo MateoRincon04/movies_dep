@@ -1,6 +1,6 @@
 ---
 - hosts: Frontend_movie_analyst
-  remote_user: root
+  become_user: root
   become: yes
   become_method: sudo
   vars:
@@ -23,4 +23,4 @@
 
     - name: Run application using pm2
       ansible.builtin.shell:
-        cmd: BACK_HOST={{BACK_HOST}} NODE_ENV={{NODE_ENV}} pm2 start server.js --update-env
+        cmd: BACK_HOST={{BACK_HOST}} NODE_ENV={{NODE_ENV}} pm2 start ~/movie-analyst-ui/server.js --update-env
